@@ -23,7 +23,6 @@
 @end
 
 
-
 %hook CAMApplicationDelegate
 
 %new
@@ -31,33 +30,33 @@
     [self.viewfinderViewController _handleFlipButtonReleased:[self.viewfinderViewController _flipButton]];
 }
 
-
 %end
 
-
-%hook CAMPreviewViewController
-// Hooking an instance method with no arguments.
-- (void) viewDidLoad{
+%group enabled
+    %hook CAMPreviewViewController
+    - (void) viewDidLoad{
         %orig;
 
-         UITapGestureRecognizer *recognizer =
+        UITapGestureRecognizer *recognizer =
         [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                action:@selector(handleTap:)];
+                                        action:@selector(handleTap:)];
 
-recognizer.numberOfTapsRequired = 2;
-[self.previewView addGestureRecognizer:recognizer];
-}
-%new
-- (void)handleTap:(UITapGestureRecognizer *)recognizer {
-    // UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to say hello?"
-    //                                             message:@"More info..."
-    //                                             delegate:self
-    //                                             cancelButtonTitle:@"Cancel"
-    //                                             otherButtonTitles:@"Say Hello",nil];
-    // [alert show];
-    CAMApplicationDelegate *delegate = (CAMApplicationDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate flip];
-
-
-}
+        recognizer.numberOfTapsRequired = 2;
+        [self.previewView addGestureRecognizer:recognizer];
+    }
+    %new
+    - (void)handleTap:(UITapGestureRecognizer *)recognizer {
+        CAMApplicationDelegate *delegate = (CAMApplicationDelegate *)[[UIApplication sharedApplication] delegate];
+        [delegate flip];
+    }
+    %end
 %end
+
+%ctor {
+    %init;
+    NSDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/net.johnatkinson.tapflipprefs.plist"];
+    if( settings[@"Enabled"] ? [settings[@"Enabled"] boolValue] : NO)
+    {
+        %init(enabled);
+    }
+}
