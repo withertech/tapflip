@@ -1,0 +1,9 @@
+Package: net.johnatkinson.tapflip
+Name: tapflip
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Double tap to change camera 
+Maintainer: John Atkinson
+Author: John Atkinson
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)
