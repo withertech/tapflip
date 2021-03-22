@@ -30,6 +30,7 @@
             [self.viewfinderViewController _handleFlipButtonReleased:[self.viewfinderViewController _flipButton]];
         }
     %end
+    
     %hook CAMPreviewViewController
         - (void) viewDidLoad
         {
