@@ -23,16 +23,17 @@
 @end
 
 
-%hook CAMApplicationDelegate
 
-%new
-- (void)flip{
-    [self.viewfinderViewController _handleFlipButtonReleased:[self.viewfinderViewController _flipButton]];
-}
-
-%end
 
 %group enabled
+    %hook CAMApplicationDelegate
+
+    %new
+    - (void)flip{
+        [self.viewfinderViewController _handleFlipButtonReleased:[self.viewfinderViewController _flipButton]];
+    }
+
+    %end
     %hook CAMPreviewViewController
     - (void) viewDidLoad{
         %orig;
